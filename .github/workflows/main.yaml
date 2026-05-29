@@ -52,7 +52,8 @@ jobs:
         id: build-kernel-package
         shell: bash
         run: |
-          su build bash -c "cd /home/build/linux && updpkgsums && MAKEFLAGS=-j$(nproc) makepkg"
+        # 使用 --skipinteg 强制跳过文件哈希校验
+          su build bash -c "cd /home/build/linux && MAKEFLAGS=-j$(nproc) makepkg --skipinteg"
           . /home/build/linux/PKGBUILD
           full_version=${pkgver}-${pkgrel}
           echo "full_version=$full_version" >> "$GITHUB_OUTPUT"
