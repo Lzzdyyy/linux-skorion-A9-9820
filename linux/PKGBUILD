@@ -3,7 +3,7 @@
 
 pkgbase=linux-chimeraos
 pkgver=6.14.9.chos1
-pkgrel=1
+pkgrel=1.1
 pkgdesc='Linux ChimeraOS'
 _srctag=v${pkgver%.*}-${pkgver##*.}
 url="https://github.com/ChimeraOS/linux/commits/$_srctag"
@@ -60,7 +60,8 @@ _make() {
 prepare() {
   mv linux-${pkgver%.*}-${pkgver##*.} $_srcname
   cd $_srcname
-
+  # 强行注入 A9-9820 (Kryptos) 支持，识别为 Bonaire 架构
+  find . -path "*/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c" -exec sed -i '/{0x1002, 0x6640/i \t{0x1002, 0x154C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_BONAIRE},' {} +
   echo "Setting version..."
   echo "${pkgbase#linux}" > localversion.10-pkgname
   echo "-$pkgrel" > localversion.20-pkgrel
