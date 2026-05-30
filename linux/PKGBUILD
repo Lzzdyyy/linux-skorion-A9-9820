@@ -62,6 +62,12 @@ prepare() {
   cd $_srcname
   # 强行注入 A9-9820 (Kryptos) 支持，识别为 Bonaire 架构
   find . -path "*/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c" -exec sed -i '/{0x1002, 0x6640/i \t{0x1002, 0x154C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_BONAIRE},' {} +
+  # === 新增：暴力干掉所有 tools/ 目录下的 -Werror ===
+  echo "正在移除 tools 目录下的 -Werror..."
+  find tools/ -type f -name "Makefile*" -exec sed -i 's/-Werror//g' {} +
+  find tools/ -type f -name "*.mk" -exec sed -i 's/-Werror//g' {} +
+  # === 针对 libbpf 可能写死的情况再加一道保险 ===
+  find tools/bpf/ -type f -exec sed -i 's/-Werror//g' {} +
   echo "Setting version..."
   echo "${pkgbase#linux}" > localversion.10-pkgname
   echo "-$pkgrel" > localversion.20-pkgrel
