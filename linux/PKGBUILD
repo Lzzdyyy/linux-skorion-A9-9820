@@ -61,7 +61,7 @@ prepare() {
   mv linux-${pkgver%.*}-${pkgver##*.} $_srcname
   cd $_srcname
   # 强行注入 A9-9820 (Kryptos) 支持，识别为 Bonaire 架构
-  find . -path "*/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c" -exec sed -i '/{0x1002, 0x6640/i \t{0x1002, 0x154C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_BONAIRE},' {} +
+  find . -path "*/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c" -exec sed -i '/{0x1002, 0x6640/i \  {0x1002, 0x154C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_BONAIRE},' {} +
   # === 新增：暴力干掉所有 tools/ 目录下的 -Werror ===
   echo "正在移除 tools 目录下的 -Werror..."
   find tools/ -type f -name "Makefile*" -exec sed -i 's/-Werror//g' {} +
