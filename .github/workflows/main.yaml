@@ -77,7 +77,6 @@ jobs:
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{needs.build-kernel.outputs.full_version}}
           name: linux-chimeraos-${{needs.build-kernel.outputs.full_version}}
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
